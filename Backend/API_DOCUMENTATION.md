@@ -1,199 +1,67 @@
-# Space Biology Knowledge Engine - API Documentation
+# 🚀 Space Biology Knowledge Engine - API Documentation
 
 ## Overview
 
-The Space Biology Knowledge Engine API provides comprehensive endpoints for data exploration, text preprocessing, and article management. The API is built with FastAPI and provides automatic interactive documentation.
+The Space Biology Knowledge Engine API provides comprehensive access to space biology research data with advanced search, visualization, and analysis capabilities. Built on FastAPI with detailed documentation and frontend-friendly responses.
 
-## Base URL
+## 🎯 Frontend Integration Guide
+
+### Base URL
 
 ```
-http://localhost:8000
+http://localhost:8000/api/v1
 ```
 
-## API Documentation
+### Authentication
 
-- **Interactive Docs**: `http://localhost:8000/docs`
-- **ReDoc**: `http://localhost:8000/redoc`
+Currently no authentication required. All endpoints are publicly accessible.
 
-## Authentication
+### Response Format
 
-Currently, the API does not require authentication. In production, implement proper authentication mechanisms.
+All responses are JSON with consistent structure:
 
-## API Endpoints
-
-### 1. Data Exploration Endpoints (`/api/v1/data/`)
-
-#### Get Dataset Overview
-
-```http
-GET /api/v1/data/overview?file_path=optional_path
-```
-
-Returns basic dataset information including shape, columns, and data types.
-
-#### Analyze Data Quality
-
-```http
-GET /api/v1/data/quality?file_path=optional_path
-```
-
-Analyzes data completeness, missing values, and column statistics.
-
-#### Analyze Text Content
-
-```http
-GET /api/v1/data/text-analysis?file_path=optional_path
-```
-
-Analyzes text columns including length statistics and word counts.
-
-#### Analyze Publication Trends
-
-```http
-GET /api/v1/data/publication-trends?file_path=optional_path
-```
-
-Analyzes publication trends over time if date information is available.
-
-#### Analyze Journal Distribution
-
-```http
-GET /api/v1/data/journal-distribution?file_path=optional_path
-```
-
-Analyzes journal distribution and top publishing journals.
-
-#### Analyze Author Distribution
-
-```http
-GET /api/v1/data/author-distribution?file_path=optional_path
-```
-
-Analyzes author distribution and top authors.
-
-#### Get Comprehensive Analysis
-
-```http
-GET /api/v1/data/comprehensive-analysis?file_path=optional_path
-```
-
-Returns all analysis results in a single response.
-
-#### Get Sample Data
-
-```http
-GET /api/v1/data/sample?n=5&file_path=optional_path
-```
-
-Returns sample records from the dataset.
-
-#### Upload Dataset
-
-```http
-POST /api/v1/data/upload
-Content-Type: multipart/form-data
-
-file: CSV file
-```
-
-Upload and analyze a CSV dataset.
-
-#### Export Cleaned Dataset
-
-```http
-POST /api/v1/data/export-cleaned?file_path=optional_path&output_path=optional_path
-```
-
-Export a cleaned version of the dataset.
-
-#### Get Dataset Columns
-
-```http
-GET /api/v1/data/columns?file_path=optional_path
-```
-
-Get detailed information about dataset columns.
-
-### 2. Text Preprocessing Endpoints (`/api/v1/preprocessing/`)
-
-#### Process Dataset
-
-```http
-POST /api/v1/preprocessing/process-dataset?file_path=optional_path
-```
-
-Process dataset for text preprocessing including cleaning, tokenization, and stemming.
-
-#### Perform Topic Modeling
-
-```http
-POST /api/v1/preprocessing/topic-modeling?n_topics=5&file_path=optional_path
-```
-
-Perform LDA topic modeling on processed text.
-
-#### Get Vocabulary Analysis
-
-```http
-GET /api/v1/preprocessing/vocabulary?file_path=optional_path
-```
-
-Get vocabulary analysis including word frequencies.
-
-#### Get Preprocessing Summary
-
-```http
-GET /api/v1/preprocessing/summary?file_path=optional_path
-```
-
-Get summary of preprocessing results.
-
-#### Clean Text
-
-```http
-POST /api/v1/preprocessing/clean-text
-Content-Type: application/json
-
+```json
 {
-  "text": "Text to clean"
+  "data": {...},
+  "status": "success",
+  "message": "Optional message"
 }
 ```
 
-Clean and process a single text string.
+## 📊 Core Endpoints
 
-#### Create TF-IDF Matrix
+### 1. Articles Management
 
-```http
-GET /api/v1/preprocessing/tfidf-matrix?max_features=1000&file_path=optional_path
-```
-
-Create TF-IDF matrix for topic modeling.
-
-#### Get Topics
+#### Get All Articles
 
 ```http
-GET /api/v1/preprocessing/topics?file_path=optional_path
+GET /api/v1/articles
 ```
 
-Get topic modeling results and distribution.
+**Parameters:**
 
-#### Get Word Frequency
+- `limit` (int, optional): Number of articles to return (1-100, default: 10)
+- `offset` (int, optional): Number of articles to skip (default: 0)
 
-```http
-GET /api/v1/preprocessing/word-frequency?top_n=50&file_path=optional_path
+**Response:**
+
+```json
+[
+  {
+    "id": 1,
+    "title": "Microgravity Effects on Bone Loss",
+    "link": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3630201/",
+    "text": "Original article text",
+    "clean_text": "Preprocessed text",
+    "word_count": 14,
+    "topic": 3,
+    "year": 2013,
+    "authors": ["Author1", "Author2"],
+    "journal": "Nature",
+    "created_at": "2024-01-15T10:30:00Z"
+  }
+]
 ```
-
-Get word frequency analysis.
-
-### 3. Article Management Endpoints (`/api/v1/articles/`)
-
-#### List Articles
-
-```http
-GET /api/v1/articles?limit=10&offset=0
-```
-
-Get paginated list of articles.
 
 #### Get Article by ID
 
@@ -201,211 +69,562 @@ Get paginated list of articles.
 GET /api/v1/articles/{article_id}
 ```
 
-Get specific article by ID.
-
-#### Create Article
-
-```http
-POST /api/v1/articles
-Content-Type: application/json
-
-{
-  "title": "Article Title",
-  "authors": ["Author 1", "Author 2"],
-  "abstract": "Article abstract...",
-  "journal": "Journal Name",
-  "keywords": ["keyword1", "keyword2"]
-}
-```
-
-Create a new article.
-
-#### Update Article
-
-```http
-PUT /api/v1/articles/{article_id}
-Content-Type: application/json
-
-{
-  "title": "Updated Title",
-  "abstract": "Updated abstract..."
-}
-```
-
-Update an existing article.
-
-#### Delete Article
-
-```http
-DELETE /api/v1/articles/{article_id}
-```
-
-Delete an article.
-
 #### Search Articles
 
 ```http
-GET /api/v1/articles/search?q=search_query&limit=10&similarity_threshold=0.7
+GET /api/v1/articles/search?q={query}&limit={limit}
 ```
 
-Search articles by keyword with optional semantic similarity.
+**Parameters:**
 
-#### Get Similar Articles
+- `q` (string, required): Search query
+- `limit` (int, optional): Maximum results (1-100, default: 10)
+- `similarity_threshold` (float, optional): Minimum similarity score (0.0-1.0)
+
+### 2. 🔍 Enhanced Search
+
+#### Semantic Search
 
 ```http
-GET /api/v1/articles/similarity/{article_id}?limit=5&threshold=0.7
+POST /api/v1/search/semantic
 ```
 
-Find articles similar to a given article.
-
-#### Get Articles by Topic
-
-```http
-GET /api/v1/articles/topic/{topic_id}?limit=10
-```
-
-Get articles belonging to a specific topic.
-
-#### Get Article Statistics
-
-```http
-GET /api/v1/articles/stats
-```
-
-Get comprehensive article statistics.
-
-## Response Formats
-
-### Success Response
+**Request Body:**
 
 ```json
 {
-  "data": {...},
-  "message": "Success message",
-  "timestamp": "2023-12-01T10:00:00Z"
+  "query": "microgravity effects on bone",
+  "limit": 10,
+  "similarity_threshold": 0.7,
+  "use_embeddings": true
 }
 ```
 
-### Error Response
+**Frontend Usage:**
+
+- Use for "Find Similar" functionality
+- More accurate than keyword search
+- Returns semantically similar articles
+
+#### Advanced Search with Filters
+
+```http
+POST /api/v1/search/advanced
+```
+
+**Request Body:**
+
+```json
+{
+  "query": "space biology",
+  "filters": {
+    "topics": [0, 1, 2],
+    "years": [2020, 2021, 2022],
+    "min_word_count": 10,
+    "max_word_count": 50,
+    "article_types": ["research"],
+    "journals": ["Nature", "Science"]
+  },
+  "limit": 20,
+  "sort_by": "relevance"
+}
+```
+
+#### Find Similar Articles
+
+```http
+GET /api/v1/search/similar/{article_id}?limit={limit}&threshold={threshold}
+```
+
+**Frontend Usage:**
+
+- "Related Articles" section
+- Article detail page recommendations
+- Similarity scores for ranking
+
+#### Search Suggestions
+
+```http
+GET /api/v1/search/suggestions?query={partial_query}&limit={limit}
+```
+
+**Response:**
+
+```json
+{
+  "suggestions": [
+    "microgravity effects",
+    "microgravity bone loss",
+    "microgravity muscle atrophy"
+  ],
+  "query": "micrograv"
+}
+```
+
+### 3. 📊 Visualizations
+
+#### Topic Distribution
+
+```http
+GET /api/v1/visualizations/topic-distribution
+```
+
+**Response:**
+
+```json
+[
+  {
+    "topic_id": 0,
+    "topic_name": "Spaceflight Research",
+    "article_count": 146,
+    "percentage": 25.7,
+    "top_words": ["spaceflight", "microgravity", "space"]
+  }
+]
+```
+
+**Frontend Usage:**
+
+- Pie charts: Use `percentage` for slice sizes
+- Bar charts: Use `article_count` for bar heights
+- Tooltips: Display `top_words` for context
+
+#### Temporal Trends
+
+```http
+GET /api/v1/visualizations/temporal-trends?start_year={year}&end_year={year}
+```
+
+**Response:**
+
+```json
+[
+  {
+    "year": 2020,
+    "article_count": 45,
+    "topics": {
+      "0": 12,
+      "1": 8,
+      "2": 15
+    }
+  }
+]
+```
+
+**Frontend Usage:**
+
+- Line charts: `year` on x-axis, `article_count` on y-axis
+- Multi-line charts: Use `topics` dict for topic-specific trends
+
+#### Word Cloud Data
+
+```http
+GET /api/v1/visualizations/word-cloud/{topic_id}?max_words={count}
+```
+
+**Response:**
+
+```json
+{
+  "topic_id": 0,
+  "words": {
+    "spaceflight": 45,
+    "microgravity": 32,
+    "space": 28
+  },
+  "title": "Topic 0 Word Cloud"
+}
+```
+
+**Frontend Usage:**
+
+- Word cloud libraries: WordCloud.js, D3.js
+- Word size: Proportional to frequency
+- Color: Based on topic or frequency
+
+#### Network Visualization
+
+```http
+GET /api/v1/visualizations/network?network_type={type}&min_frequency={freq}&max_nodes={count}
+```
+
+**Parameters:**
+
+- `network_type`: "word_cooccurrence" or "topic_similarity"
+- `min_frequency`: Minimum word frequency threshold
+- `max_nodes`: Maximum nodes to include
+
+**Response:**
+
+```json
+{
+  "nodes": [
+    {
+      "id": "spaceflight",
+      "label": "spaceflight",
+      "size": 45,
+      "color": "#ff6b6b"
+    }
+  ],
+  "edges": [
+    {
+      "source": "spaceflight",
+      "target": "microgravity",
+      "weight": 0.8,
+      "color": "#95a5a6"
+    }
+  ],
+  "title": "Word Co-occurrence Network",
+  "layout": "force"
+}
+```
+
+**Frontend Usage:**
+
+- Network libraries: D3.js, vis.js, Cytoscape.js
+- Node size: Based on frequency/importance
+- Edge thickness: Based on weight/co-occurrence
+
+#### Comprehensive Statistics
+
+```http
+GET /api/v1/visualizations/statistics
+```
+
+**Response:**
+
+```json
+{
+  "total_articles": 624,
+  "articles_with_topics": 569,
+  "articles_with_year": 624,
+  "unique_topics": 9,
+  "year_range": {
+    "min": 1990,
+    "max": 2024
+  },
+  "average_word_count": 8.5,
+  "topic_distribution": [...],
+  "temporal_trends": [...]
+}
+```
+
+**Frontend Usage:**
+
+- Dashboard overview cards
+- Main statistics display
+- Overview charts
+
+### 4. 📈 Chart Data
+
+#### Generic Chart Data
+
+```http
+GET /api/v1/visualizations/chart/{chart_type}?topic_id={id}&year_range={range}
+```
+
+**Supported Chart Types:**
+
+- `word_count_distribution`: Histogram of word counts
+- `topic_evolution`: Topic trends over time
+- `publication_density`: Publications per year
+- `topic_coherence`: Topic quality scores
+
+**Response:**
+
+```json
+{
+  "chart_type": "bar",
+  "title": "Topic Distribution",
+  "data": {
+    "labels": ["Topic 0", "Topic 1"],
+    "datasets": [
+      {
+        "data": [146, 89],
+        "label": "Article Count"
+      }
+    ]
+  },
+  "x_axis": "Topics",
+  "y_axis": "Article Count"
+}
+```
+
+**Frontend Usage:**
+
+- Compatible with Chart.js, D3.js
+- Flexible chart generation
+- Data structure optimized for common libraries
+
+## 🎨 Frontend Implementation Examples
+
+### React.js Integration
+
+```javascript
+// Fetch topic distribution for pie chart
+const fetchTopicDistribution = async () => {
+  const response = await fetch("/api/v1/visualizations/topic-distribution");
+  const data = await response.json();
+
+  // Use with Chart.js
+  const chartData = {
+    labels: data.map((topic) => topic.topic_name),
+    datasets: [
+      {
+        data: data.map((topic) => topic.percentage),
+        backgroundColor: ["#ff6b6b", "#4ecdc4", "#45b7d1"],
+      },
+    ],
+  };
+
+  return chartData;
+};
+
+// Semantic search
+const performSemanticSearch = async (query) => {
+  const response = await fetch("/api/v1/search/semantic", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: query,
+      limit: 10,
+      similarity_threshold: 0.7,
+    }),
+  });
+
+  return await response.json();
+};
+```
+
+### Vue.js Integration
+
+```javascript
+// Vue component for word cloud
+export default {
+  data() {
+    return {
+      wordCloudData: null,
+    };
+  },
+  async mounted() {
+    await this.loadWordCloud(0); // Load word cloud for topic 0
+  },
+  methods: {
+    async loadWordCloud(topicId) {
+      const response = await fetch(
+        `/api/v1/visualizations/word-cloud/${topicId}`
+      );
+      this.wordCloudData = await response.json();
+
+      // Use with WordCloud.js
+      this.generateWordCloud();
+    },
+    generateWordCloud() {
+      // Implementation with WordCloud.js
+      WordCloud(document.getElementById("wordcloud"), {
+        list: Object.entries(this.wordCloudData.words).map(([word, freq]) => [
+          word,
+          freq,
+        ]),
+        weightFactor: 10,
+        color: "random-dark",
+      });
+    },
+  },
+};
+```
+
+### Angular Integration
+
+```typescript
+// Angular service for API calls
+@Injectable()
+export class SpaceBioApiService {
+  private baseUrl = "/api/v1";
+
+  constructor(private http: HttpClient) {}
+
+  // Get temporal trends for line chart
+  getTemporalTrends(
+    startYear?: number,
+    endYear?: number
+  ): Observable<TemporalAnalysis[]> {
+    let params = new HttpParams();
+    if (startYear) params = params.set("start_year", startYear.toString());
+    if (endYear) params = params.set("end_year", endYear.toString());
+
+    return this.http.get<TemporalAnalysis[]>(
+      `${this.baseUrl}/visualizations/temporal-trends`,
+      { params }
+    );
+  }
+
+  // Advanced search with filters
+  advancedSearch(
+    request: AdvancedSearchRequest
+  ): Observable<ArticleSearchResponse> {
+    return this.http.post<ArticleSearchResponse>(
+      `${this.baseUrl}/search/advanced`,
+      request
+    );
+  }
+}
+```
+
+## 🔧 Error Handling
+
+### Standard Error Response
 
 ```json
 {
   "detail": "Error message",
-  "status_code": 400
+  "status_code": 500
 }
 ```
 
-## Data Processing Pipeline
-
-### 1. Data Exploration
-
-1. Load CSV dataset
-2. Analyze data quality and completeness
-3. Identify text columns and patterns
-4. Generate comprehensive analysis report
-
-### 2. Text Preprocessing
-
-1. Clean text (remove HTML, URLs, special characters)
-2. Tokenize text into words
-3. Remove stop words
-4. Apply stemming and lemmatization
-5. Create processed dataset
-
-### 3. Topic Modeling
-
-1. Create TF-IDF matrix
-2. Apply LDA topic modeling
-3. Assign topics to documents
-4. Generate topic analysis
-
-### 4. Similarity Search
-
-1. Generate text embeddings
-2. Create similarity matrix
-3. Implement fast search algorithms
-4. Return ranked results
-
-## Usage Examples
-
-### Python Client Example
-
-```python
-import requests
-
-# Get dataset overview
-response = requests.get("http://localhost:8000/api/v1/data/overview")
-overview = response.json()
-
-# Process dataset
-response = requests.post("http://localhost:8000/api/v1/preprocessing/process-dataset")
-results = response.json()
-
-# Search articles
-response = requests.get("http://localhost:8000/api/v1/articles/search?q=microgravity")
-articles = response.json()
-```
-
-### cURL Examples
-
-```bash
-# Get comprehensive analysis
-curl -X GET "http://localhost:8000/api/v1/data/comprehensive-analysis"
-
-# Process dataset
-curl -X POST "http://localhost:8000/api/v1/preprocessing/process-dataset"
-
-# Search articles
-curl -X GET "http://localhost:8000/api/v1/articles/search?q=space%20biology"
-```
-
-## Error Handling
-
-The API uses standard HTTP status codes:
+### Common HTTP Status Codes
 
 - `200`: Success
-- `400`: Bad Request
-- `404`: Not Found
-- `422`: Validation Error
+- `400`: Bad Request (invalid parameters)
+- `404`: Not Found (article/resource not found)
+- `422`: Validation Error (invalid request body)
 - `500`: Internal Server Error
 
-## Rate Limiting
+## 📱 Mobile App Integration
 
-Currently, no rate limiting is implemented. In production, implement appropriate rate limiting.
+### React Native Example
 
-## CORS
+```javascript
+// Fetch articles for mobile list
+const fetchArticles = async (limit = 20, offset = 0) => {
+  try {
+    const response = await fetch(
+      `http://your-api-domain.com/api/v1/articles?limit=${limit}&offset=${offset}`
+    );
+    const articles = await response.json();
+    return articles;
+  } catch (error) {
+    console.error("API Error:", error);
+    return [];
+  }
+};
 
-CORS is enabled for all origins. Configure appropriately for production use.
+// Search with debouncing
+const searchArticles = async (query) => {
+  if (query.length < 2) return [];
 
-## File Uploads
+  const response = await fetch(
+    `http://your-api-domain.com/api/v1/articles/search?q=${encodeURIComponent(
+      query
+    )}`
+  );
+  return await response.json();
+};
+```
 
-- Maximum file size: 100MB
-- Supported formats: CSV only
-- Files are processed temporarily and cleaned up automatically
+## 🚀 Performance Tips
 
-## Data Storage
+### Caching
 
-- Processed datasets are saved to the `data/` directory
-- TF-IDF matrices and models are saved as pickle files
-- Database files are stored as SQLite databases
+- Cache visualization data (topics, statistics) for better performance
+- Use browser localStorage for search history
+- Implement pagination for large datasets
 
-## Performance Considerations
+### Optimization
 
-- Large datasets are processed in chunks
-- TF-IDF matrices are cached for reuse
-- Background tasks are used for long-running operations
-- Async processing is used where possible
+- Use `limit` parameter to control response size
+- Implement client-side filtering for better UX
+- Use semantic search for better relevance
 
-## Security Notes
+### Rate Limiting
 
-- Input validation is performed on all endpoints
-- File uploads are validated for type and size
-- SQL injection protection is implemented
-- XSS protection is in place
+- Currently no rate limiting implemented
+- Consider implementing for production use
 
-## Monitoring and Logging
+## 🔐 Security Considerations
 
-- All API calls are logged
-- Error tracking is implemented
-- Performance metrics are collected
-- Health check endpoint available at `/health`
+### CORS
+
+- Currently allows all origins (`*`)
+- Configure specific origins for production
+
+### Data Privacy
+
+- No personal data stored
+- All data is publicly available research articles
+
+## 📊 Data Structure
+
+### Article Model
+
+```typescript
+interface Article {
+  id?: number;
+  title: string;
+  link?: string;
+  text?: string;
+  clean_text?: string;
+  word_count?: number;
+  topic?: number;
+  year?: number;
+  authors: string[];
+  journal?: string;
+  publication_date?: string;
+  doi?: string;
+  pmc_id?: string;
+  abstract?: string;
+  keywords: string[];
+  article_type: "research" | "review" | "case_study" | "other";
+  url?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+```
+
+### Topic Distribution
+
+```typescript
+interface TopicDistribution {
+  topic_id: number;
+  topic_name?: string;
+  article_count: number;
+  percentage: number;
+  top_words: string[];
+}
+```
+
+## 🎯 Best Practices
+
+### Frontend Development
+
+1. **Use TypeScript** for better type safety
+2. **Implement error boundaries** for robust error handling
+3. **Add loading states** for better UX
+4. **Use pagination** for large datasets
+5. **Implement search debouncing** for performance
+
+### API Usage
+
+1. **Cache static data** (topics, statistics)
+2. **Use appropriate limits** to control response size
+3. **Handle errors gracefully** with fallback UI
+4. **Implement retry logic** for failed requests
+5. **Use semantic search** for better relevance
+
+## 📞 Support
+
+For API support and questions:
+
+- **Documentation**: `/docs` (Swagger UI)
+- **Alternative Docs**: `/redoc` (ReDoc)
+- **Health Check**: `/health`
+- **API Stats**: `/api/v1/stats`
+
+## 🔄 Version History
+
+- **v2.0.0**: Enhanced search, visualizations, comprehensive documentation
+- **v1.0.0**: Basic article management and search
+
+---
+
+_This API is designed for easy frontend integration with comprehensive documentation and examples. All endpoints include detailed frontend usage notes and response schemas._
