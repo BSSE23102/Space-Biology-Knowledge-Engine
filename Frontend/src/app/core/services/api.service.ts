@@ -22,4 +22,30 @@ export class ApiService {
   getStatistics(): Observable<any> {
     return this.http.get<any>(`${this.base}/visualizations/statistics`);
   }
+
+  searchArticles(query: string): Observable<Article[]> {
+    return this.http.get<Article[]>(`${this.base}/search`, { params: { query } });
+  }
+
+  // Visualization endpoints
+  getTopicDistribution(): Observable<any> {
+    return this.http.get(`${this.base}/visualizations/topic-distribution`);
+  }
+
+  getTemporalTrends(startYear?: number, endYear?: number): Observable<any> {
+    let params = new HttpParams();
+    if (startYear) params = params.set('start_year', String(startYear));
+    if (endYear) params = params.set('end_year', String(endYear));
+    return this.http.get(`${this.base}/visualizations/temporal-trends`, { params });
+  }
+
+  getWordFrequencies(limit: number = 20): Observable<any> {
+    return this.http.get(`${this.base}/visualizations/word-frequencies`, { 
+      params: { limit: String(limit) } 
+    });
+  }
+
+  getTopicWordCloud(topicId: number): Observable<any> {
+    return this.http.get(`${this.base}/visualizations/topic-wordcloud/${topicId}`);
+  }
 }
