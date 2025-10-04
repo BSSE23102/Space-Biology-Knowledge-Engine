@@ -1,0 +1,13 @@
+<div>
+  <h2>Dashboard</h2>
+
+  <div *ngIf="loading">Loading statistics...</div>
+  <div *ngIf="error" style="color: red">{{ error }}</div>
+
+  <div *ngIf="stats">
+    <p>Total articles: {{ stats.total_articles }}</p>
+    <p>Articles with topics: {{ stats.articles_with_topics }}</p>
+    <p>Unique topics: {{ stats.unique_topics }}</p>
+    <p>Year range: {{ stats.year_range?.min }} - {{ stats.year_range?.max }}</p>
+  </div>
+</div>
