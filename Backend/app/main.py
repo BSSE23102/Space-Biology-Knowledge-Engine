@@ -11,6 +11,8 @@ from typing import List, Optional
 import os
 
 from app.routes.articles import router as articles_router
+from app.routes.data_exploration import router as data_exploration_router
+from app.routes.text_preprocessing import router as text_preprocessing_router
 from app.config import settings
 
 # Initialize FastAPI app
@@ -31,6 +33,8 @@ app.add_middleware(
 
 # Include routers
 app.include_router(articles_router, prefix="/api/v1", tags=["articles"])
+app.include_router(data_exploration_router, prefix="/api/v1", tags=["data-exploration"])
+app.include_router(text_preprocessing_router, prefix="/api/v1", tags=["text-preprocessing"])
 
 @app.get("/")
 async def root():
