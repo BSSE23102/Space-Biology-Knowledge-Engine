@@ -71,10 +71,50 @@ Backend/
 
 ### Prerequisites
 
-- Python 3.8+
-- pip or conda
+- **Python 3.8+** (Python 3.9+ recommended)
+- **pip** (comes with Python)
+- **Git** (for cloning the repository)
 
-### Installation
+### 🎯 One-Click Startup
+
+The easiest way to get started is using our automated startup scripts:
+
+#### Windows Users
+
+```cmd
+# Navigate to Backend directory
+cd Space-Biology-Knowledge-Engine\Backend
+
+# Run the startup script
+.\start.bat
+# or
+start.bat
+```
+
+#### Linux/Mac Users
+
+```bash
+# Navigate to Backend directory
+cd Space-Biology-Knowledge-Engine/Backend
+
+# Run the startup script
+./start.sh
+```
+
+**⚠️ Important**: Make sure you're in the `Backend` directory when running these scripts!
+
+**That's it!** The script will automatically:
+
+- ✅ Check Python installation
+- ✅ Create virtual environment
+- ✅ Install all dependencies
+- ✅ Check data files
+- ✅ Start the FastAPI server
+- ✅ Open API documentation
+
+### 📋 Manual Installation (Alternative)
+
+If you prefer manual setup or the scripts don't work:
 
 1. **Clone the repository**
 
@@ -86,35 +126,172 @@ cd Space-Biology-Knowledge-Engine/Backend
 2. **Create virtual environment**
 
 ```bash
+# Windows
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate
+
+# Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
 ```
 
 3. **Install dependencies**
 
 ```bash
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
 4. **Start the server**
 
 ```bash
-# Using Python
+# Method 1: Using uvicorn directly
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+# Method 2: Using Python module
 python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# Using startup script
-# Windows
-start.bat
-
-# Linux/Mac
-./start.sh
+# Method 3: Using Python directly
+python app/main.py
 ```
 
-5. **Access the API**
+### 🌐 Access the API
 
-- **API Documentation**: http://localhost:8000/docs
-- **Alternative Docs**: http://localhost:8000/redoc
-- **Health Check**: http://localhost:8000/health
+Once the server is running, you can access:
+
+| Service                  | URL                                | Description            |
+| ------------------------ | ---------------------------------- | ---------------------- |
+| 📖 **API Documentation** | http://localhost:8000/docs         | Interactive Swagger UI |
+| 📚 **Alternative Docs**  | http://localhost:8000/redoc        | ReDoc documentation    |
+| ❤️ **Health Check**      | http://localhost:8000/health       | Server status          |
+| 📊 **API Stats**         | http://localhost:8000/api/v1/stats | Usage statistics       |
+| 🏠 **Root Endpoint**     | http://localhost:8000/             | API information        |
+
+### 🔧 Troubleshooting Startup Issues
+
+#### Common Issues and Solutions
+
+**1. Python Not Found**
+
+```bash
+# Check Python installation
+python --version
+# or
+python3 --version
+
+# If not installed, download from: https://python.org
+```
+
+**2. Port Already in Use**
+
+```bash
+# Use a different port
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+
+# Or kill the process using port 8000
+# Windows
+netstat -ano | findstr :8000
+taskkill /PID <PID> /F
+
+# Linux/Mac
+lsof -ti:8000 | xargs kill -9
+```
+
+**3. Permission Denied (Linux/Mac)**
+
+```bash
+# Make script executable
+chmod +x start.sh
+
+# Or run with bash
+bash start.sh
+```
+
+**4. Virtual Environment Issues**
+
+```bash
+# Delete and recreate virtual environment
+rm -rf venv  # Linux/Mac
+rmdir /s venv  # Windows
+
+# Then run startup script again
+```
+
+**5. Dependencies Installation Failed**
+
+```bash
+# Update pip first
+pip install --upgrade pip
+
+# Install dependencies one by one
+pip install fastapi
+pip install uvicorn
+pip install pandas
+pip install numpy
+# ... continue with other packages
+```
+
+**6. Data Files Missing**
+
+```bash
+# Check if data files exist
+ls -la ../../datasets/  # Linux/Mac
+dir ..\..\datasets\  # Windows
+
+# The API will still work with limited functionality
+```
+
+**7. "No module named 'app'" Error**
+
+```bash
+# This happens when you're in the wrong directory
+# Make sure you're in the Backend directory:
+cd Space-Biology-Knowledge-Engine/Backend  # Linux/Mac
+cd Space-Biology-Knowledge-Engine\Backend    # Windows
+
+# Then run the startup script
+./start.sh     # Linux/Mac
+.\start.bat    # Windows
+```
+
+**8. Script Not Found Error**
+
+```bash
+# Make sure you're in the correct directory
+pwd  # Linux/Mac - should show .../Backend
+dir  # Windows - should show start.bat file
+
+# If scripts are missing, you can start manually:
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### 🚀 Production Deployment
+
+For production deployment:
+
+```bash
+# Install production dependencies
+pip install gunicorn
+
+# Run with Gunicorn (Linux/Mac)
+gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+
+# Or use Docker (recommended)
+docker build -t space-bio-api .
+docker run -p 8000:8000 space-bio-api
+```
+
+### 📱 Development Mode
+
+For development with auto-reload:
+
+```bash
+# Start with debug logging
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-level debug
+
+# Start with specific log file
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-config logging.conf
+```
 
 ## 📊 API Endpoints
 
@@ -241,7 +418,35 @@ export default {
 
 ## 🧪 Testing
 
-### Run Tests
+### 🎯 Automated API Testing
+
+We provide automated test scripts to verify all API endpoints are working correctly:
+
+#### Windows Users
+
+```cmd
+# Run the test script
+test_api.bat
+```
+
+#### Linux/Mac Users
+
+```bash
+# Run the test script
+./test_api.sh
+```
+
+**The test script will automatically:**
+
+- ✅ Check if the server is running
+- ✅ Test all basic endpoints (health, docs, etc.)
+- ✅ Test all API endpoints (articles, search, visualizations)
+- ✅ Test POST endpoints (semantic search, advanced search)
+- ✅ Provide a comprehensive test report
+
+### 📋 Manual Testing
+
+#### Run Unit Tests
 
 ```bash
 # Run all tests
@@ -254,7 +459,7 @@ pytest tests/test_articles.py
 pytest --cov=app tests/
 ```
 
-### Test API Endpoints
+#### Test API Endpoints Manually
 
 ```bash
 # Test health endpoint
@@ -267,6 +472,45 @@ curl "http://localhost:8000/api/v1/articles/search?q=microgravity&limit=5"
 curl -X POST "http://localhost:8000/api/v1/search/semantic" \
   -H "Content-Type: application/json" \
   -d '{"query": "space biology", "limit": 10}'
+
+# Test visualization endpoints
+curl "http://localhost:8000/api/v1/visualizations/topic-distribution"
+curl "http://localhost:8000/api/v1/visualizations/statistics"
+```
+
+### 🔍 Browser Testing
+
+You can also test the API directly in your browser:
+
+1. **Open API Documentation**: http://localhost:8000/docs
+2. **Try the interactive endpoints** in the Swagger UI
+3. **Test different parameters** and see real responses
+4. **Check the health endpoint**: http://localhost:8000/health
+
+### 📊 Expected Test Results
+
+When running the automated tests, you should see:
+
+```
+🧪 Testing Space Biology Knowledge Engine Backend...
+[PASS] Server is running!
+🔍 Testing Basic Endpoints...
+[PASS] Root endpoint - Status: 200
+[PASS] Health check - Status: 200
+[PASS] API documentation - Status: 200
+📊 Testing API Endpoints...
+[PASS] API statistics - Status: 200
+[PASS] Get articles - Status: 200
+[PASS] Topic distribution - Status: 200
+🔎 Testing Search Endpoints...
+[PASS] Article search - Status: 200
+[PASS] Search suggestions - Status: 200
+📝 Testing POST Endpoints...
+[PASS] Semantic search - Status: 200
+[PASS] Advanced search - Status: 200
+🎯 Test Summary:
+[PASS] Backend API is working correctly!
+[SUCCESS] Backend testing completed successfully! 🚀
 ```
 
 ## 📊 Data Models
