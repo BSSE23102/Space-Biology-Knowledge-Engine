@@ -29,10 +29,10 @@ class VisualizationService:
     """
     
     def __init__(self):
-        self.data_path = "../../datasets/sb_publications_clean.csv"
-        self.topics_path = "../../datasets/topics.csv"
-        self.embeddings_path = "../../datasets/embeddings.npy"
-        self.metadata_path = "../../datasets/metadata.json"
+        self.data_path = "../datasets/sb_publications_clean.csv"
+        self.topics_path = "../datasets/topics.csv"
+        self.embeddings_path = "../datasets/embeddings.npy"
+        self.metadata_path = "../datasets/metadata.json"
         
         # Load data
         self.df = None

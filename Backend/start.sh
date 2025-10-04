@@ -94,10 +94,10 @@ fi
 # Check if data files exist
 print_status "Checking data files..."
 DATA_FILES=(
-    "../../datasets/sb_publications_clean.csv"
-    "../../datasets/topics.csv"
-    "../../datasets/embeddings.npy"
-    "../../datasets/metadata.json"
+    "../datasets/sb_publications_clean.csv"
+    "../datasets/topics.csv"
+    "../datasets/embeddings.npy"
+    "../datasets/metadata.json"
 )
 
 MISSING_FILES=()

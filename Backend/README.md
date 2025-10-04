@@ -235,8 +235,8 @@ pip install numpy
 
 ```bash
 # Check if data files exist
-ls -la ../../datasets/  # Linux/Mac
-dir ..\..\datasets\  # Windows
+ls -la ../datasets/  # Linux/Mac
+dir ..\datasets\  # Windows
 
 # The API will still work with limited functionality
 ```
@@ -357,7 +357,7 @@ CORS_ORIGINS=["http://localhost:3000", "http://localhost:8080"]
 
 ### Data Requirements
 
-The API expects the following data files in the `../../datasets/` directory:
+The API expects the following data files in the `../datasets/` directory (relative to Backend folder):
 
 - `sb_publications_clean.csv` - Main publications dataset
 - `topics.csv` - Topic modeling results

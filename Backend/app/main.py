@@ -129,9 +129,9 @@ async def health_check():
     try:
         # Check if data files exist
         data_files = [
-            "../../datasets/sb_publications_clean.csv",
-            "../../datasets/topics.csv",
-            "../../datasets/embeddings.npy"
+            "../datasets/sb_publications_clean.csv",
+            "../datasets/topics.csv",
+            "../datasets/embeddings.npy"
         ]
         
         missing_files = []
@@ -179,7 +179,7 @@ async def get_api_stats():
         import pandas as pd
         
         # Load basic stats
-        df_path = "../../datasets/sb_publications_clean.csv"
+        df_path = "../datasets/sb_publications_clean.csv"
         if os.path.exists(df_path):
             df = pd.read_csv(df_path)
             stats = {

@@ -67,23 +67,23 @@ REM Check if data files exist
 echo [INFO] Checking data files...
 set MISSING_FILES=0
 
-if not exist "..\..\datasets\sb_publications_clean.csv" (
-    echo [WARNING] Missing: ../../datasets/sb_publications_clean.csv
+if not exist "..\datasets\sb_publications_clean.csv" (
+    echo [WARNING] Missing: ../datasets/sb_publications_clean.csv
     set MISSING_FILES=1
 )
 
-if not exist "..\..\datasets\topics.csv" (
-    echo [WARNING] Missing: ../../datasets/topics.csv
+if not exist "..\datasets\topics.csv" (
+    echo [WARNING] Missing: ../datasets/topics.csv
     set MISSING_FILES=1
 )
 
-if not exist "..\..\datasets\embeddings.npy" (
-    echo [WARNING] Missing: ../../datasets/embeddings.npy
+if not exist "..\datasets\embeddings.npy" (
+    echo [WARNING] Missing: ../datasets/embeddings.npy
     set MISSING_FILES=1
 )
 
-if not exist "..\..\datasets\metadata.json" (
-    echo [WARNING] Missing: ../../datasets/metadata.json
+if not exist "..\datasets\metadata.json" (
+    echo [WARNING] Missing: ../datasets/metadata.json
     set MISSING_FILES=1
 )
 
