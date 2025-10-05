@@ -31,6 +31,44 @@ async def get_articles(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.get("/articles/search", response_model=ArticleSearchResponse)
+async def search_articles(
+    q: str = Query(..., description="Search query"),
+    page_size: int = Query(10, ge=1, le=100, description="Number of results per page"),
+    page: int = Query(1, ge=1, description="Page number"),
+    article_service: ArticleService = Depends(get_article_service)
+):
+    """Search articles by keyword"""
+    try:
+        start_time = time.time()
+        
+        # Create search request
+        search_request = ArticleSearchRequest(
+            query=q,
+            page_size=page_size,
+            page=page
+        )
+        
+        # Perform search
+        articles = await article_service.search_articles(search_request)
+        
+        search_time = (time.time() - start_time) * 1000  # Convert to milliseconds
+        
+        return ArticleSearchResponse(
+            articles=articles,
+            total_count=len(articles),
+            search_query=q,
+            filters_applied={"query": q},
+            search_time_ms=search_time,
+            page=page,
+            page_size=page_size,
+            total_pages=1,
+            has_next=False,
+            has_previous=page > 1
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @router.get("/articles/{article_id}", response_model=Article)
 async def get_article(
     article_id: int,
@@ -89,38 +127,6 @@ async def delete_article(
         return {"message": "Article deleted successfully"}
     except HTTPException:
         raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@router.get("/articles/search", response_model=ArticleSearchResponse)
-async def search_articles(
-    q: str = Query(..., description="Search query"),
-    limit: int = Query(10, ge=1, le=100),
-    similarity_threshold: Optional[float] = Query(None, ge=0.0, le=1.0),
-    article_service: ArticleService = Depends(get_article_service)
-):
-    """Search articles by keyword"""
-    try:
-        start_time = time.time()
-        
-        # Create search request
-        search_request = ArticleSearchRequest(
-            query=q,
-            limit=limit,
-            similarity_threshold=similarity_threshold
-        )
-        
-        # Perform search
-        articles = await article_service.search_articles(search_request)
-        
-        search_time = (time.time() - start_time) * 1000  # Convert to milliseconds
-        
-        return ArticleSearchResponse(
-            articles=articles,
-            total_count=len(articles),
-            query=q,
-            search_time_ms=search_time
-        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

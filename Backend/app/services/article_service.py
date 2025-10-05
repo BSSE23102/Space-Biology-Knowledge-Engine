@@ -65,20 +65,10 @@ class ArticleService:
     async def search_articles(self, search_request: ArticleSearchRequest) -> List[Article]:
         """Search articles using keyword matching"""
         # Basic keyword search
-        articles = self.db_manager.search_articles(search_request.query, search_request.limit)
+        articles = self.db_manager.search_articles(search_request.query, search_request.page_size)
         
-        # If similarity threshold is provided, perform semantic search
-        if search_request.similarity_threshold:
-            semantic_results = await self._semantic_search(
-                search_request.query, 
-                search_request.similarity_threshold,
-                search_request.limit
-            )
-            # Combine and deduplicate results
-            article_ids = {article.id for article in articles}
-            semantic_articles = [result.article for result in semantic_results 
-                               if result.article.id not in article_ids]
-            articles.extend(semantic_articles[:search_request.limit - len(articles)])
+        # TODO: Add semantic search if needed
+        # For now, just return basic keyword search results
         
         return articles
     

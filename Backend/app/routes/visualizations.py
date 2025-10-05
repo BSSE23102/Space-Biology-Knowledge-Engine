@@ -265,7 +265,7 @@ async def get_chart_data(
 
 @router.get("/visualizations/export/{format}")
 async def export_visualization_data(
-    format: str = Query("json", description="Export format: json, csv"),
+    format: str,
     visualization_type: str = Query("all", description="Type of data to export"),
     visualization_service: VisualizationService = Depends(get_visualization_service)
 ):

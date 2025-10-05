@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
   standalone: true,
-  imports: [RouterModule, CommonModule]
+  imports: [RouterModule, CommonModule],
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
   menuOpen = false;

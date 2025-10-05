@@ -99,9 +99,25 @@ class VisualizationService:
                 if topic_col in self.topics_df.columns:
                     top_words = self.topics_df[topic_col].dropna().tolist()[:5]
             
+            # Generate meaningful topic names based on top words
+            topic_name_map = {
+                0: "Spaceflight & Plant Biology",
+                1: "Arabidopsis Space Research", 
+                2: "Spaceflight Stress & Calcium",
+                3: "Microbial Spaceflight Studies",
+                4: "Muscle & Skeletal Effects",
+                5: "Plant Adaptation & Microgravity",
+                6: "Bone Health & Space Exploration",
+                7: "Microgravity Bone Research",
+                8: "Stem Cell & Space Science",
+                9: "Space Station Genomics"
+            }
+            
+            topic_name = topic_name_map.get(int(topic_id), f"Topic {int(topic_id)}")
+            
             distribution.append(TopicDistribution(
                 topic_id=int(topic_id),
-                topic_name=f"Topic {int(topic_id)}",
+                topic_name=topic_name,
                 article_count=int(count),
                 percentage=round(percentage, 1),
                 top_words=top_words

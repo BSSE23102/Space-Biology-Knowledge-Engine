@@ -1,16 +1,104 @@
 <section class="search-section">
-  <h2 class="section-title">Semantic Search</h2>
-  <form (submit)="search(); $event.preventDefault()" class="search-form">
-    <input type="text" [(ngModel)]="query" placeholder="Search articles..." />
-    <button type="submit" class="search-btn">Search</button>
-  </form>
-  <div *ngIf="loading">Searching...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
-  <div class="search-results">
-    <div *ngFor="let result of results" class="result-card">
-      <h3>{{ result.title }}</h3>
-      <p>{{ result.abstract }}</p>
-      <span class="result-meta">{{ result.year }} | {{ result.topic }}</span>
+  <h2 class="section-title">🔍 Search</h2>
+  
+  <!-- Live Search Input -->
+  <div class="search-container">
+    <div class="search-input-wrapper">
+      <input 
+        type="text" 
+        [(ngModel)]="query" 
+        (input)="onQueryChange()"
+        placeholder="Start typing to search articles... (e.g., microgravity, bone loss)"
+        class="search-input"
+        [class.searching]="loading"
+      />
+      <div class="search-icon" *ngIf="!loading">🔍</div>
+      <div class="loading-spinner" *ngIf="loading">
+        <div class="spinner"></div>
+      </div>
+      <button 
+        *ngIf="query" 
+        class="clear-btn" 
+        (click)="clearSearch()"
+        title="Clear search"
+      >
+        ✕
+      </button>
     </div>
+
+    <!-- Search Suggestions -->
+    <div class="search-suggestions" *ngIf="!query && !loading">
+      <div class="suggestions-header">Popular searches:</div>
+      <div class="suggestion-tags">
+        <button 
+          *ngFor="let suggestion of popularSearches" 
+          class="suggestion-tag"
+          (click)="searchSuggestion(suggestion)"
+        >
+          {{ suggestion }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Summary -->
+  <div class="results-summary" *ngIf="query && !loading">
+    <span *ngIf="totalResults > 0" class="results-count">
+      {{ totalResults }} articles found for "{{ query }}"
+    </span>
+    <span *ngIf="totalResults === 0 && results.length === 0" class="no-results">
+      No articles found for "{{ query }}"
+    </span>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    <div class="error-icon">⚠️</div>
+    <div class="error-text">{{ error }}</div>
+  </div>
+
+  <!-- Search Results -->
+  <div class="search-results" *ngIf="results.length > 0">
+    <div *ngFor="let result of results; trackBy: trackByArticleId" class="result-card">
+      <div class="result-header">
+        <h3 class="result-title">{{ result.title }}</h3>
+        <div class="result-badges">
+          <span *ngIf="result.topic_label" class="topic-badge">{{ result.topic_label }}</span>
+          <span *ngIf="result.year" class="year-badge">{{ result.year }}</span>
+        </div>
+      </div>
+      
+      <p class="result-abstract" *ngIf="result.abstract">
+        {{ result.abstract }}
+      </p>
+      
+      <div class="result-meta">
+        <span *ngIf="result.authors" class="authors">
+          <strong>Authors:</strong> {{ result.authors }}
+        </span>
+        <span *ngIf="result.journal" class="journal">
+          <strong>Journal:</strong> {{ result.journal }}
+        </span>
+        <span *ngIf="result.word_count" class="word-count">
+          {{ result.word_count }} words
+        </span>
+      </div>
+      
+      <div class="result-actions">
+        <a *ngIf="result.url" [href]="result.url" target="_blank" class="read-link">
+          📖 Read Original
+        </a>
+        <button class="view-details-btn" (click)="viewDetails(result)">
+          View Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load More Button -->
+  <div class="load-more-section" *ngIf="results.length > 0 && totalResults > results.length">
+    <button class="load-more-btn" (click)="loadMore()">
+      Load More Articles
+    </button>
   </div>
 </section>

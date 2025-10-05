@@ -4,7 +4,7 @@ import { ArticlesListComponent } from './features/articles/articles-list.compone
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { SearchComponent } from './features/search/search.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'articles', component: ArticlesListComponent },
