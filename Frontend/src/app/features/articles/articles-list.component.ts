@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
 import { Article } from '../../core/models/article.model';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-articles-list',
-  standalone: false,
-  templateUrl: './articles-list.component.html'
+  templateUrl: './articles-list.component.html',
+  styleUrls: ['./articles-list.component.scss'],
+  standalone: true,
+  imports: [CommonModule, RouterModule]
 })
 export class ArticlesListComponent implements OnInit {
   articles: Article[] = [];
