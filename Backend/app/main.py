@@ -10,7 +10,7 @@ import uvicorn
 from typing import List, Optional
 import os
 
-from app.routes.articles import router as articles_router
+from app.routes.articles_simple import router as articles_router
 from app.routes.data_exploration import router as data_exploration_router
 from app.routes.text_preprocessing import router as text_preprocessing_router
 from app.routes.visualizations import router as visualizations_router

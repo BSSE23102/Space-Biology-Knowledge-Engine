@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "npx ng serve --open",
-    "build": "npx ng build",
-    "test": "npx ng test",
-    "lint": "npx ng lint"
+    "start": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng serve --open",
+    "start-dev": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng serve",
+    "build": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build",
+    "build-prod": "node --max-old-space-size=4096 ./node_modules/@angular/cli/bin/ng build --configuration production",
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "dependencies": {
     "@angular/animations": "^20.0.0",

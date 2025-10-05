@@ -92,37 +92,66 @@ async def delete_article(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/articles/search", response_model=ArticleSearchResponse)
+@router.get("/articles/search")
 async def search_articles(
     q: str = Query(..., description="Search query"),
     limit: int = Query(10, ge=1, le=100),
-    similarity_threshold: Optional[float] = Query(None, ge=0.0, le=1.0),
-    article_service: ArticleService = Depends(get_article_service)
+    similarity_threshold: Optional[float] = Query(None, ge=0.0, le=1.0)
 ):
-    """Search articles by keyword"""
+    """Search articles by keyword using CSV data"""
     try:
+        import pandas as pd
+        import os
+        
         start_time = time.time()
         
-        # Create search request
-        search_request = ArticleSearchRequest(
-            query=q,
-            limit=limit,
-            similarity_threshold=similarity_threshold
-        )
+        # Load data from CSV
+        csv_path = "../datasets/sb_publications_clean.csv"
+        if not os.path.exists(csv_path):
+            csv_path = "datasets/sb_publications_clean.csv"
         
-        # Perform search
-        articles = await article_service.search_articles(search_request)
+        if not os.path.exists(csv_path):
+            return {
+                "articles": [],
+                "total_count": 0,
+                "query": q,
+                "search_time_ms": 0,
+                "message": "No data available"
+            }
         
-        search_time = (time.time() - start_time) * 1000  # Convert to milliseconds
+        df = pd.read_csv(csv_path)
         
-        return ArticleSearchResponse(
-            articles=articles,
-            total_count=len(articles),
-            query=q,
-            search_time_ms=search_time
-        )
+        # Simple text search in title and clean_text
+        query_lower = q.lower()
+        mask = df['title'].fillna('').str.lower().str.contains(query_lower, regex=False) | \
+               df['clean_text'].fillna('').str.lower().str.contains(query_lower, regex=False)
+        
+        results_df = df[mask].head(limit)
+        
+        # Convert to list of dictionaries
+        articles = []
+        for _, row in results_df.iterrows():
+            articles.append({
+                "id": int(row.get('id', 0)) if pd.notna(row.get('id')) else 0,
+                "title": str(row.get('title', '')),
+                "link": str(row.get('link', '')) if pd.notna(row.get('link')) else None,
+                "text": str(row.get('text', '')) if pd.notna(row.get('text')) else None,
+                "clean_text": str(row.get('clean_text', '')) if pd.notna(row.get('clean_text')) else None,
+                "word_count": int(row.get('word_count', 0)) if pd.notna(row.get('word_count')) else 0,
+                "topic": int(row.get('topic', -1)) if pd.notna(row.get('topic')) else -1,
+                "year": int(row.get('year', 0)) if pd.notna(row.get('year')) else None,
+            })
+        
+        search_time = (time.time() - start_time) * 1000
+        
+        return {
+            "articles": articles,
+            "total_count": len(articles),
+            "query": q,
+            "search_time_ms": search_time
+        }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
 
 @router.get("/articles/similarity/{article_id}", response_model=List[SimilarityResult])
 async def get_similar_articles(

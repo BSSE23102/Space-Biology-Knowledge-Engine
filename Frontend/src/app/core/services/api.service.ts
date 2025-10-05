@@ -23,8 +23,8 @@ export class ApiService {
     return this.http.get<any>(`${this.base}/visualizations/statistics`);
   }
 
-  searchArticles(query: string): Observable<Article[]> {
-    return this.http.get<Article[]>(`${this.base}/search`, { params: { query } });
+  searchArticles(query: string): Observable<any> {
+    return this.http.get<any>(`${this.base}/articles/search`, { params: { q: query } });
   }
 
   // Visualization endpoints
@@ -40,12 +40,13 @@ export class ApiService {
   }
 
   getWordFrequencies(limit: number = 20): Observable<any> {
-    return this.http.get(`${this.base}/visualizations/word-frequencies`, { 
+    // Use word cloud endpoint for general word frequencies (topic_id = -1 for all topics)
+    return this.http.get(`${this.base}/visualizations/word-cloud/-1`, { 
       params: { limit: String(limit) } 
     });
   }
 
   getTopicWordCloud(topicId: number): Observable<any> {
-    return this.http.get(`${this.base}/visualizations/topic-wordcloud/${topicId}`);
+    return this.http.get(`${this.base}/visualizations/word-cloud/${topicId}`);
   }
 }
