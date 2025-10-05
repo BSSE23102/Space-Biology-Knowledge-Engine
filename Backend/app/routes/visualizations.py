@@ -3,7 +3,7 @@ Visualization API routes for Space Biology Knowledge Engine
 Provides endpoints for charts, graphs, and interactive visualizations
 """
 
-from fastapi import APIRouter, HTTPException, Query, Depends
+from fastapi import APIRouter, HTTPException, Query, Path, Depends
 from typing import List, Optional, Dict, Any
 import pandas as pd
 import numpy as np
@@ -265,7 +265,7 @@ async def get_chart_data(
 
 @router.get("/visualizations/export/{format}")
 async def export_visualization_data(
-    format: str = Query("json", description="Export format: json, csv"),
+    format: str = Path(..., description="Export format: json, csv"),
     visualization_type: str = Query("all", description="Type of data to export"),
     visualization_service: VisualizationService = Depends(get_visualization_service)
 ):

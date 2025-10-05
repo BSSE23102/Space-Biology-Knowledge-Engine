@@ -24,10 +24,16 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "space-bio-frontend:build"
+            "buildTarget": "space-bio-frontend:build",
+            "headers": {
+              "Content-Security-Policy": "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' http://localhost:8000 ws://localhost:4200; img-src 'self' data: blob:;"
+            }
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "8fa972a5-4703-48ea-a1f4-561347dc29fa"
   }
 }

@@ -1,200 +1,436 @@
-# Space Biology Knowledge Engine
+# 🚀 Space Biology Knowledge Engine
 
-A comprehensive knowledge engine for exploring and analyzing space biology research publications.
+A comprehensive web application for exploring, searching, and visualizing space biology research data.
 
-## Project Overview
+## 📋 Table of Contents
 
-The Space Biology Knowledge Engine is designed to help researchers, students, and enthusiasts explore the vast landscape of space biology research. It provides powerful search capabilities, topic modeling, and visualization tools to understand research trends and find relevant publications.
+- [Overview](#overview)
+- [Quick Start](#quick-start)
+- [Architecture](#architecture)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Running the Application](#running-the-application)
+- [API Documentation](#api-documentation)
+- [Troubleshooting](#troubleshooting)
 
-## Features
+## 🎯 Overview
 
-### 🔍 **Intelligent Search**
+The Space Biology Knowledge Engine is a full-stack web application that provides:
 
-- Keyword-based search across titles and abstracts
-- Semantic similarity search using embeddings
-- Topic-based article filtering
-- Advanced filtering by publication date, journal, and authors
+- **Backend**: FastAPI server with comprehensive REST API
+- **Frontend**: Angular application with modern UI
+- **Data Analysis**: 624+ space biology research articles
+- **Visualizations**: Interactive charts, graphs, and network analysis
+- **Search**: Advanced semantic search with AI-powered similarity
 
-### 📊 **Analytics & Visualization**
+## 🚀 Quick Start
 
-- Topic modeling using LDA (Latent Dirichlet Allocation)
-- Research trend analysis over time
-- Word clouds and frequency analysis
-- Interactive visualizations of research clusters
+### One-Command Startup
 
-### 🚀 **Modern Architecture**
+#### Windows
 
-- FastAPI backend with async support
-- SQLite database for efficient storage
-- RESTful API with comprehensive documentation
-- Modular design for easy extension
+```cmd
+start_app.bat
+```
 
-## Project Structure
+#### Linux/Mac
+
+```bash
+./start_app.sh
+```
+
+That's it! The script will:
+
+1. ✅ Set up virtual environment for backend
+2. ✅ Install all dependencies
+3. ✅ Start backend server (port 8000)
+4. ✅ Start frontend server (port 4200)
+5. ✅ Open the application in your browser
+
+### Access the Application
+
+Once started, you can access:
+
+- **Web Application**: http://localhost:4200
+- **API Documentation**: http://localhost:8000/docs
+- **API Health**: http://localhost:8000/health
+- **API Stats**: http://localhost:8000/api/v1/stats
+
+## 🏗️ Architecture
 
 ```
-SpaceBio-KnowledgeEngine/
-│
-├── Backend/                          # Python Backend (FastAPI)
+Space-Biology-Knowledge-Engine/
+├── Backend/                 # FastAPI backend
 │   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py                   # API entry point
-│   │   ├── models/                   # Data models / schemas
-│   │   │   └── article.py
-│   │   ├── routes/                   # API endpoints
-│   │   │   └── articles.py
-│   │   ├── services/                 # Business logic
-│   │   │   └── article_service.py
-│   │   ├── database/                 # DB connection
-│   │   │   └── db.py
-│   │   ├── utils/                    # Helpers (scrapers, preprocessors)
-│   │   │   ├── text_cleaner.py
-│   │   │   └── nlp_utils.py
-│   │   └── config.py
-│   ├── requirements.txt              # Python dependencies
-│   └── tests/
-│       └── test_articles.py
+│   │   ├── main.py          # API entry point
+│   │   ├── routes/          # API endpoints
+│   │   ├── services/        # Business logic
+│   │   └── models/          # Data models
+│   └── requirements.txt     # Python dependencies
 │
-├── Research/                         # Jupyter/Colab Notebooks
-│   ├── 01_data_exploration.ipynb     # Load & clean CSV
-│   ├── 02_text_preprocessing.ipynb   # Tokenization, stopwords, stemming
-│   ├── 03_topic_modeling.ipynb       # LDA, clustering
-│   ├── 04_embeddings.ipynb           # BERT/SciBERT embeddings
-│   ├── 05_similarity_search.ipynb    # Vector similarity (FAISS)
-│   ├── 06_visualizations.ipynb       # t-SNE, word clouds, topic trends
-│   └── datasets/
-│       └── SB_publication_PMC.csv
+├── Frontend/                # Angular frontend
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── features/    # Feature modules
+│   │   │   └── core/        # Core services
+│   │   └── environments/    # Environment configs
+│   └── package.json         # NPM dependencies
 │
-├── Frontend/                         # Angular Frontend (User Implementation)
-│   └── (To be implemented by Ahmad)
+├── datasets/                # Research data
+│   ├── sb_publications_clean.csv
+│   ├── topics.csv
+│   ├── embeddings.npy
+│   └── metadata.json
 │
-└── README.md
+├── start_app.bat            # Windows startup script
+└── start_app.sh             # Linux/Mac startup script
 ```
 
-## Quick Start
+## ✨ Features
 
-### Backend Setup
+### Backend Features
 
-1. **Clone the repository**
+- 📊 **Comprehensive REST API**
+  - Article management (CRUD operations)
+  - Advanced search with filters
+  - Semantic similarity search
+  - Visualization data endpoints
+- 🔍 **Search Capabilities**
+  - Keyword search
+  - Semantic embedding search
+  - Advanced filtering (topics, years, word count)
+  - Search suggestions and autocomplete
+- 📈 **Visualization Data**
+  - Topic distribution
+  - Temporal trends analysis
+  - Word cloud generation
+  - Network visualizations
+  - Comprehensive statistics
 
-   ```bash
-   git clone <repository-url>
-   cd Space-Biology-Knowledge-Engine
-   ```
+### Frontend Features
 
-2. **Set up Python environment**
+- 🎨 **Modern Angular UI**
+  - Responsive design
+  - Interactive dashboard
+  - Real-time search
+- 📊 **Data Visualization**
+  - Charts and graphs
+  - Topic distribution
+  - Publication trends
+- 🔎 **Search Interface**
+  - Advanced filters
+  - Real-time results
+  - Article details
 
-   ```bash
-   cd Backend
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-3. **Run the API server**
-
-   ```bash
-   python -m app.main
-   ```
-
-   The API will be available at `http://localhost:8000`
-
-   - API Documentation: `http://localhost:8000/docs`
-   - Health Check: `http://localhost:8000/health`
-
-### Research Notebooks
-
-1. **Set up Jupyter environment**
-
-   ```bash
-   cd Research
-   pip install jupyter notebook
-   ```
-
-2. **Run notebooks in sequence**
-
-   ```bash
-   jupyter notebook
-   ```
-
-   Execute notebooks in order:
-
-   - `01_data_exploration.ipynb`
-   - `02_text_preprocessing.ipynb`
-   - `03_topic_modeling.ipynb`
-   - `04_embeddings.ipynb`
-   - `05_similarity_search.ipynb`
-   - `06_visualizations.ipynb`
-
-## API Endpoints
-
-### Articles
-
-- `GET /api/v1/articles` - List all articles
-- `GET /api/v1/articles/{id}` - Get specific article
-- `POST /api/v1/articles` - Create new article
-- `PUT /api/v1/articles/{id}` - Update article
-- `DELETE /api/v1/articles/{id}` - Delete article
-
-### Search
-
-- `GET /api/v1/articles/search?q={query}` - Search articles
-- `GET /api/v1/articles/similarity/{id}` - Find similar articles
-- `GET /api/v1/articles/topic/{topic_id}` - Get articles by topic
-- `GET /api/v1/articles/stats` - Get article statistics
-
-## Data Processing Pipeline
-
-1. **Data Exploration** - Analyze dataset structure and quality
-2. **Text Preprocessing** - Clean, tokenize, and normalize text
-3. **Topic Modeling** - Identify research themes using LDA
-4. **Embeddings** - Generate semantic embeddings for similarity search
-5. **Similarity Search** - Implement fast vector search with FAISS
-6. **Visualizations** - Create comprehensive visualizations
-
-## Technologies Used
+## 📦 Requirements
 
 ### Backend
 
-- **FastAPI** - Modern, fast web framework
-- **SQLite** - Lightweight database
-- **Pydantic** - Data validation
-- **NLTK** - Natural language processing
-- **scikit-learn** - Machine learning utilities
-- **NumPy/Pandas** - Data processing
+- Python 3.8+ (Python 3.9+ recommended)
+- pip
+- Virtual environment support
 
-### Research
+### Frontend
 
-- **Jupyter Notebooks** - Interactive analysis
-- **Matplotlib/Seaborn** - Visualization
-- **WordCloud** - Text visualization
-- **FAISS** - Vector similarity search (optional)
+- Node.js 16+ (with npm)
+- Angular CLI 20+
 
-## Contributing
+### Data
+
+- Space biology research dataset (included in `datasets/` directory)
+
+## 💻 Installation
+
+### Automatic Installation (Recommended)
+
+Run the startup script - it handles everything:
+
+```cmd
+# Windows
+start_app.bat
+
+# Linux/Mac
+./start_app.sh
+```
+
+### Manual Installation
+
+#### 1. Backend Setup
+
+```bash
+cd Backend
+
+# Create virtual environment
+python -m venv .venv
+
+# Activate virtual environment
+# Windows:
+.venv\Scripts\activate
+# Linux/Mac:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+#### 2. Frontend Setup
+
+```bash
+cd Frontend
+
+# Install dependencies
+npm install
+```
+
+## 🎯 Running the Application
+
+### Method 1: One-Command Startup (Easiest)
+
+**Windows:**
+
+```cmd
+start_app.bat
+```
+
+**Linux/Mac:**
+
+```bash
+./start_app.sh
+```
+
+### Method 2: Manual Startup
+
+#### Start Backend
+
+```bash
+cd Backend
+.venv\Scripts\activate  # Windows
+source .venv/bin/activate  # Linux/Mac
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+#### Start Frontend (in a new terminal)
+
+```bash
+cd Frontend
+npm start
+```
+
+### Method 3: Individual Components
+
+**Backend Only:**
+
+```bash
+cd Backend
+.\start.bat  # Windows
+./start.sh   # Linux/Mac
+```
+
+**Frontend Only:**
+
+```bash
+cd Frontend
+npm start
+```
+
+## 📖 API Documentation
+
+### Interactive API Documentation
+
+Once the backend is running, visit:
+
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+
+### Key API Endpoints
+
+#### Articles
+
+- `GET /api/v1/articles` - Get all articles (paginated)
+- `GET /api/v1/articles/{id}` - Get specific article
+- `GET /api/v1/articles/search` - Search articles
+
+#### Search
+
+- `POST /api/v1/search/semantic` - Semantic similarity search
+- `POST /api/v1/search/advanced` - Advanced search with filters
+- `GET /api/v1/search/suggestions` - Search suggestions
+
+#### Visualizations
+
+- `GET /api/v1/visualizations/topic-distribution` - Topic distribution data
+- `GET /api/v1/visualizations/temporal-trends` - Publication trends
+- `GET /api/v1/visualizations/statistics` - Comprehensive statistics
+- `GET /api/v1/visualizations/word-cloud/{topic_id}` - Word cloud data
+
+For complete API documentation, see [Backend/API_DOCUMENTATION.md](Backend/API_DOCUMENTATION.md)
+
+## 🔧 Configuration
+
+### Backend Configuration
+
+Edit `Backend/app/config.py` or use environment variables:
+
+```bash
+API_HOST=0.0.0.0
+API_PORT=8000
+API_DEBUG=True
+```
+
+### Frontend Configuration
+
+Edit `Frontend/src/environments/environment.ts`:
+
+```typescript
+export const environment = {
+  production: false,
+  apiBase: "http://localhost:8000/api/v1",
+};
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### 1. Backend Port Already in Use
+
+```bash
+# Check what's using port 8000
+# Windows:
+netstat -ano | findstr :8000
+
+# Linux/Mac:
+lsof -ti:8000
+
+# Kill the process or use a different port
+python -m uvicorn app.main:app --reload --port 8001
+```
+
+#### 2. Frontend Port Already in Use
+
+```bash
+# Angular will automatically try the next available port
+# Or specify a custom port:
+ng serve --port 4201
+```
+
+#### 3. Module Not Found Errors (Backend)
+
+```bash
+cd Backend
+.venv\Scripts\activate
+pip install -r requirements.txt --force-reinstall
+```
+
+#### 4. Dependencies Installation Failed (Frontend)
+
+```bash
+cd Frontend
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+#### 5. Data Files Missing
+
+The application needs these files in the `datasets/` directory:
+
+- `sb_publications_clean.csv`
+- `topics.csv`
+- `embeddings.npy`
+- `metadata.json`
+
+If missing, the API will still work but with limited functionality.
+
+#### 6. CORS Errors
+
+Make sure the backend is running before starting the frontend. The frontend is configured to proxy API requests to the backend.
+
+#### 7. Virtual Environment Issues
+
+```bash
+# Delete and recreate virtual environment
+cd Backend
+rm -rf .venv  # Linux/Mac
+rmdir /s .venv  # Windows
+
+# Then run the startup script again
+```
+
+### Getting Help
+
+1. **Check Backend Health**: http://localhost:8000/health
+2. **Check Backend Logs**: Look at the backend terminal window
+3. **Check Frontend Console**: Open browser DevTools (F12)
+4. **API Documentation**: http://localhost:8000/docs
+
+## 📊 Data Overview
+
+The application includes analysis of:
+
+- **Total Articles**: 624+ space biology research publications
+- **Topics Identified**: 9 distinct research topics via LDA analysis
+- **Year Range**: 1990-2024
+- **Features**:
+  - Topic modeling and clustering
+  - Temporal trend analysis
+  - Word co-occurrence networks
+  - Semantic similarity search
+
+## 🚀 Development
+
+### Backend Development
+
+```bash
+cd Backend
+.venv\Scripts\activate
+python -m uvicorn app.main:app --reload --log-level debug
+```
+
+### Frontend Development
+
+```bash
+cd Frontend
+ng serve --open
+```
+
+### Running Tests
+
+**Backend:**
+
+```bash
+cd Backend
+pytest
+```
+
+**Frontend:**
+
+```bash
+cd Frontend
+ng test
+```
+
+## 📝 License
+
+MIT License - see LICENSE file for details.
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests for new functionality
+4. Run tests
 5. Submit a pull request
 
-## License
+## 📞 Support
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- PubMed Central (PMC) for providing the research dataset
-- The space biology research community
-- Open source libraries and tools used in this project
-
-## Support
-
-For questions, issues, or contributions, please:
-
-- Open an issue on GitHub
-- Contact the development team
-- Check the documentation in the `docs/` directory
+- **Backend Documentation**: `Backend/README.md`
+- **API Documentation**: `Backend/API_DOCUMENTATION.md`
+- **Frontend Documentation**: `Frontend/README.md`
 
 ---
 
-**Note**: The frontend implementation is left for the user to complete as requested. The backend API is fully functional and ready for frontend integration.
+**Built with ❤️ for space biology research**
+
+_FastAPI + Angular + Python + TypeScript_
