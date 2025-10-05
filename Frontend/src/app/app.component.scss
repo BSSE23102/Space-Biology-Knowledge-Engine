@@ -16,7 +16,11 @@
 }
 
 .main-content {
-  flex: 1;
+  flex: 1 0 auto;
   padding: 0;
   width: 100%;
+}
+
+app-footer {
+  flex-shrink: 0;
 }
